@@ -1,0 +1,24 @@
+<%- include('../partials/head', { title: 'Listado de productos' })  %> 
+	<h2>Listado de productos</h2>
+	<ul>
+		<% products.forEach(oneProduct => { %>
+		<li>  
+			<b>Nombre:</b> <%= oneProduct.name %> <br>
+			<b>Precio:</b> <%= oneProduct.price %> <br>
+			<b>Marca:</b> <%= oneProduct.brand.name %> <br>
+			<b>Usuario:</b> <%= oneProduct.user ? oneProduct.user.getFullName() : 'Sin usuario asignado' %> <br>
+			<% if (oneProduct.categories.length > 0) { %>
+				<h5>Categorías</h5>
+				<ul>
+					<% oneProduct.categories.forEach(category => { %>
+					<li> <%= category.name %>  </li>
+					<% }) %>
+				</ul>
+				<br>
+			<% } %>
+			<img src="/images/<%= oneProduct.image %>" width="100">
+			<br><br>
+		</li>
+		<% }) %>
+	</ul>
+<%- include('../partials/footer')  %> 

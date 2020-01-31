@@ -1,0 +1,38 @@
+<%- include('../partials/head', { title: 'Formulario para crear un producto' })  %> 
+	<h2>Formulario de creación</h2>
+	<form action="/products/create" method="POST">
+		<div>
+			<label>Nombre: </label> <br>
+			<input type="text" name="name">
+			<br><br>
+		</div>
+		<div>
+			<label>Precio: </label> <br>
+			<input type="text" name="price">
+			<br><br>
+		</div>
+		<div>
+			<label>Marca: </label>
+			<select name="brand_id">
+				<option value="">Elegí una marca</option>
+				<% brands.forEach(oneBrand => { %>
+				<option value="<%= oneBrand.id %>"> <%= oneBrand.name %> </option>
+				<% }) %>
+			</select>
+			<br><br>
+		</div>
+
+		<div>
+			<label>Categorías:</label>
+			<select name="categorias" multiple>
+				<option value="">Elegí varias categorías</option>
+				<% categories.forEach(oneCategory => { %>
+				<option value="<%= oneCategory.id %>"> <%= oneCategory.name %> </option>
+				<% }) %>
+			</select>
+		</div>
+		<br>
+		<button type="submit">Guardar</button>
+	</form>
+	
+<%- include('../partials/footer')  %> 
