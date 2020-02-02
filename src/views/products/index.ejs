@@ -3,6 +3,7 @@
 	<ul>
 		<% products.forEach(oneProduct => { %>
 		<li>  
+			<b>Id:</b> <%= oneProduct.id %> <br>
 			<b>Nombre:</b> <%= oneProduct.name %> <br>
 			<b>Precio:</b> <%= oneProduct.price %> <br>
 			<b>Marca:</b> <%= oneProduct.brand.name %> <br>
@@ -17,6 +18,9 @@
 				<br>
 			<% } %>
 			<img src="/images/<%= oneProduct.image %>" width="100">
+			<form action="/products/<%= oneProduct.id %>?_method=DELETE" method="POST">
+				<button type="submit">Eliminar</button>
+			</form>
 			<br><br>
 		</li>
 		<% }) %>

@@ -1,5 +1,6 @@
 const db = require('../database/models');
 const sequelize = db.sequelize;
+const Op = db.Sequelize.Op;
 
 const controller = {
 	index: (req, res) => {
@@ -28,24 +29,33 @@ const controller = {
 	},
 
 	store: (req, res) => {
-		// return res.send(req.body);
-		// req.body.user_id = req.session.user.id;
-		req.body.user_id = 3;
+		req.body.user_id = Math.ceil(Math.random() * 3);
 		db.Products
 			.create(req.body)
 			.then(productSaved => {
-				// let categories = req.body.categories;
-				// for (const oneCategory of categories) {
-				// 	// Guardar en la tabla pivot
-				// 	db.CategoriesProducts
-				// 		.create({
-				// 			product_id: productSaved.id,
-				// 			category_id: oneCategory
-				// 		})
-				// }
-				res.redirect('/products');
+				productSaved.addCategories(req.body.categories);
+				return res.redirect('/products');
 			})
 			.catch(error => console.log(error));
+	},
+
+	destroy: (req, res) => {
+		db.Products
+			.findByPk(req.params.id, {
+				include: ['categories']
+			})
+			.then(product => {
+				let categories = product.categories;
+				categories.map(cat => {
+					sequelize
+						.query(`DELETE FROM category_product WHERE product_id = ${product.id} AND category_id = ${cat.id}`)
+						.then(() => console.log('Done!'))
+						.catch(() => console.log('Ups I did it again!'));
+				});
+				product.destroy();
+				return res.status(200).redirect('/products');
+			})
+			.catch(() => console.log('Is the final count down!'));
 	}
 }
 
